@@ -1,0 +1,366 @@
+about:
+  date: November 04, 2024 07:49:49
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 13
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Assignment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: course_offering_id
+      required: true
+    - name: title
+      required: true
+    - name: due_date
+      type: DATETIME
+    description: Represents assignments for courses
+    info_list: Represents assignments for courses
+    tab_groups:
+    - direction: tomany
+      fks:
+      - assignment_id
+      name: SubmissionList
+      resource: Submission
+    - direction: toone
+      fks:
+      - course_offering_id
+      name: course_offering
+      resource: CourseOffering
+    type: Assignment
+    user_key: id
+  Attendance:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: course_offering_id
+      required: true
+    - name: student_id
+      required: true
+    - name: attendance_date
+      required: true
+      type: DATETIME
+    - name: status
+      required: true
+    description: Logs student attendance for courses
+    info_list: Logs student attendance for courses
+    tab_groups:
+    - direction: toone
+      fks:
+      - course_offering_id
+      name: course_offering
+      resource: CourseOffering
+    - direction: toone
+      fks:
+      - student_id
+      name: student
+      resource: Student
+    type: Attendance
+    user_key: id
+  Classroom:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: location
+      required: true
+    description: Represents physical or virtual locations where classes are held
+    info_list: Represents physical or virtual locations where classes are held
+    tab_groups:
+    - direction: tomany
+      fks:
+      - classroom_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Classroom
+    user_key: id
+  Course:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: title
+      required: true
+    - name: id
+    description: Represents courses available for enrollment
+    info_list: Represents courses available for enrollment
+    tab_groups:
+    - direction: tomany
+      fks:
+      - course_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Course
+    user_key: description
+  CourseOffering:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: classroom_id
+    - name: course_id
+      required: true
+    - name: instructor_id
+      required: true
+    - name: semester_id
+      required: true
+    description: Represents specific offerings of a course for a semester
+    info_list: Represents specific offerings of a course for a semester
+    tab_groups:
+    - direction: tomany
+      fks:
+      - course_offering_id
+      name: AssignmentList
+      resource: Assignment
+    - direction: tomany
+      fks:
+      - course_offering_id
+      name: AttendanceList
+      resource: Attendance
+    - direction: tomany
+      fks:
+      - course_offering_id
+      name: GradeList
+      resource: Grade
+    - direction: toone
+      fks:
+      - classroom_id
+      name: classroom
+      resource: Classroom
+    - direction: toone
+      fks:
+      - course_id
+      name: course
+      resource: Course
+    - direction: toone
+      fks:
+      - instructor_id
+      name: instructor
+      resource: Instructor
+    - direction: toone
+      fks:
+      - semester_id
+      name: semester
+      resource: Semester
+    type: CourseOffering
+    user_key: id
+  Grade:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: course_offering_id
+      required: true
+    - name: student_id
+      required: true
+    - name: grade
+      required: true
+    description: Represents the final grades for students in courses
+    info_list: Represents the final grades for students in courses
+    tab_groups:
+    - direction: toone
+      fks:
+      - course_offering_id
+      name: course_offering
+      resource: CourseOffering
+    - direction: toone
+      fks:
+      - student_id
+      name: student
+      resource: Student
+    type: Grade
+    user_key: id
+  Instructor:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: id
+    description: Represents instructors who teach courses
+    info_list: Represents instructors who teach courses
+    tab_groups:
+    - direction: tomany
+      fks:
+      - instructor_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Instructor
+    user_key: name
+  Role:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: id
+    description: Defines roles for users in the system, such as 'Student' or 'Admin'
+    info_list: Defines roles for users in the system, such as 'Student' or 'Admin'
+    tab_groups:
+    - direction: tomany
+      fks:
+      - role_id
+      name: UserRoleList
+      resource: UserRole
+    type: Role
+    user_key: name
+  Semester:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: start_date
+      required: true
+      type: DATETIME
+    - name: end_date
+      required: true
+      type: DATETIME
+    - name: id
+    description: Represents academic semesters
+    info_list: Represents academic semesters
+    tab_groups:
+    - direction: tomany
+      fks:
+      - semester_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Semester
+    user_key: name
+  Student:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: enrollment_date
+      type: DATETIME
+    - name: id
+    description: Represents students in the system
+    info_list: Represents students in the system
+    tab_groups:
+    - direction: tomany
+      fks:
+      - student_id
+      name: AttendanceList
+      resource: Attendance
+    - direction: tomany
+      fks:
+      - student_id
+      name: GradeList
+      resource: Grade
+    - direction: tomany
+      fks:
+      - student_id
+      name: SubmissionList
+      resource: Submission
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserRoleList
+      resource: UserRole
+    type: Student
+    user_key: name
+  Submission:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: assignment_id
+      required: true
+    - name: student_id
+      required: true
+    - name: submission_date
+      type: DATETIME
+    - name: grade
+    description: Represents student submissions for assignments
+    info_list: Represents student submissions for assignments
+    tab_groups:
+    - direction: toone
+      fks:
+      - assignment_id
+      name: assignment
+      resource: Assignment
+    - direction: toone
+      fks:
+      - student_id
+      name: student
+      resource: Student
+    type: Submission
+    user_key: id
+  UserRole:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: role_id
+      required: true
+    - name: user_id
+      required: true
+    description: Junction table assigning roles to users
+    info_list: Junction table assigning roles to users
+    tab_groups:
+    - direction: toone
+      fks:
+      - role_id
+      name: role
+      resource: Role
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: Student
+    type: UserRole
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

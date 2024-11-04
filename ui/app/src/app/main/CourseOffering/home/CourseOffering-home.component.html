@@ -1,0 +1,67 @@
+<o-form-layout-manager attr="CourseOffering" mode="tab" title="COURSEOFFERING">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="CourseOfferingTable" 
+            service="CourseOffering" 
+            entity="CourseOffering" 
+            title="COURSEOFFERING"
+            keys="id"
+            columns="id;classroom_id;course_id;instructor_id;semester_id" 
+            header-actions="R;D"
+            visible-columns="id;classroom_id;course_id;instructor_id;semester_id"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="classroom_id" title="classroom_id">
+    <o-table-cell-renderer-service attr="classroom_id" 
+        service="Classroom" entity="ClassroomType" columns="id;id"
+        parent-keys="id:classroom_id"
+        value-column="id" keys="classroom_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="course_id" title="course_id">
+    <o-table-cell-renderer-service attr="course_id" 
+        service="Course" entity="CourseType" columns="id;description"
+        parent-keys="id:course_id"
+        value-column="description" keys="course_id"
+        visible-columns="description" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="instructor_id" title="instructor_id">
+    <o-table-cell-renderer-service attr="instructor_id" 
+        service="Instructor" entity="InstructorType" columns="id;name"
+        parent-keys="id:instructor_id"
+        value-column="name" keys="instructor_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="semester_id" title="semester_id">
+    <o-table-cell-renderer-service attr="semester_id" 
+        service="Semester" entity="SemesterType" columns="id;name"
+        parent-keys="id:semester_id"
+        value-column="name" keys="semester_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

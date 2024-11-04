@@ -1,0 +1,53 @@
+<o-form-layout-manager attr="Submission" mode="tab" title="SUBMISSION">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="SubmissionTable" 
+            service="Submission" 
+            entity="Submission" 
+            title="SUBMISSION"
+            keys="id"
+            columns="id;assignment_id;student_id;submission_date;grade" 
+            header-actions="R;D"
+            visible-columns="id;assignment_id;student_id;submission_date;grade"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="assignment_id" title="assignment_id">
+    <o-table-cell-renderer-service attr="assignment_id" 
+        service="Assignment" entity="AssignmentType" columns="id;id"
+        parent-keys="id:assignment_id"
+        value-column="id" keys="assignment_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="student_id" title="student_id">
+    <o-table-cell-renderer-service attr="student_id" 
+        service="Student" entity="StudentType" columns="id;name"
+        parent-keys="id:student_id"
+        value-column="name" keys="student_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-date-input #submission_date attr="submission_date" type="timestamp" label="submission_date" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+            
+            <o-table-column #grade attr="grade" title="grade" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

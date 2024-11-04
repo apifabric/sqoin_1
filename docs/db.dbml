@@ -1,0 +1,117 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Assignment: Represents assignments for courses
+CourseOffering: Represents specific offerings of a course for a semester
+Attendance: Logs student attendance for courses
+Student: Represents students in the system
+Classroom: Represents physical or virtual locations where classes are held
+Course: Represents courses available for enrollment
+Instructor: Represents instructors who teach courses
+Semester: Represents academic semesters
+Grade: Represents the final grades for students in courses
+Role: Defines roles for users in the system, such as 'Student' or 'Admin'
+Submission: Represents student submissions for assignments
+UserRole: Junction table assigning roles to users
+'''
+}
+
+Table Assignment {
+    id INTEGER [primary key]
+    course_offering_id INTEGER 
+    title VARCHAR 
+    due_date DATETIME 
+    }
+
+Table CourseOffering {
+    id INTEGER [primary key]
+    course_id INTEGER 
+    instructor_id INTEGER 
+    semester_id INTEGER 
+    classroom_id INTEGER 
+    }
+
+Table Attendance {
+    id INTEGER [primary key]
+    student_id INTEGER 
+    course_offering_id INTEGER 
+    attendance_date DATETIME 
+    status VARCHAR 
+    }
+
+Table Student {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    enrollment_date DATETIME 
+    }
+
+Table Classroom {
+    id INTEGER [primary key]
+    location VARCHAR 
+    }
+
+Table Course {
+    id INTEGER [primary key]
+    title VARCHAR 
+    description VARCHAR 
+    }
+
+Table Instructor {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    }
+
+Table Semester {
+    id INTEGER [primary key]
+    name VARCHAR 
+    start_date DATETIME 
+    end_date DATETIME 
+    }
+
+Table Grade {
+    id INTEGER [primary key]
+    student_id INTEGER 
+    course_offering_id INTEGER 
+    grade VARCHAR 
+    }
+
+Table Role {
+    id INTEGER [primary key]
+    name VARCHAR 
+    }
+
+Table Submission {
+    id INTEGER [primary key]
+    assignment_id INTEGER 
+    student_id INTEGER 
+    submission_date DATETIME 
+    grade INTEGER 
+    }
+
+Table UserRole {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    role_id INTEGER 
+    }
+
+
+
+// Relationships
+    Ref: Assignment.(course_offering_id) < CourseOffering.(id)
+    Ref: CourseOffering.(classroom_id) < Classroom.(id)
+    Ref: CourseOffering.(course_id) < Course.(id)
+    Ref: CourseOffering.(instructor_id) < Instructor.(id)
+    Ref: CourseOffering.(semester_id) < Semester.(id)
+    Ref: Attendance.(course_offering_id) < CourseOffering.(id)
+    Ref: Attendance.(student_id) < Student.(id)
+    Ref: Grade.(course_offering_id) < CourseOffering.(id)
+    Ref: Grade.(student_id) < Student.(id)
+    Ref: Submission.(assignment_id) < Assignment.(id)
+    Ref: Submission.(student_id) < Student.(id)
+    Ref: UserRole.(role_id) < Role.(id)
+    Ref: UserRole.(user_id) < Student.(id)

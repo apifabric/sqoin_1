@@ -1,0 +1,532 @@
+about:
+  date: November 04, 2024 07:49:49
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Assignment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: course_offering_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: title
+      required: true
+      template: text
+      type: VARCHAR
+    - name: due_date
+      type: DATETIME
+    description: Represents assignments for courses
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents assignments for courses
+    label: Assignment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - assignment_id
+      name: SubmissionList
+      resource: Submission
+    - direction: toone
+      fks:
+      - course_offering_id
+      name: course_offering
+      resource: CourseOffering
+    type: Assignment
+  Attendance:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: course_offering_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: student_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: attendance_date
+      required: true
+      type: DATETIME
+    - name: status
+      required: true
+      template: text
+      type: VARCHAR
+    description: Logs student attendance for courses
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Logs student attendance for courses
+    label: Attendance
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - course_offering_id
+      name: course_offering
+      resource: CourseOffering
+    - direction: toone
+      fks:
+      - student_id
+      name: student
+      resource: Student
+    type: Attendance
+  Classroom:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: location
+      required: true
+      template: text
+      type: VARCHAR
+    description: Represents physical or virtual locations where classes are held
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents physical or virtual locations where classes are held
+    label: Classroom
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - classroom_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Classroom
+  Course:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: title
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents courses available for enrollment
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Represents courses available for enrollment
+    label: Course
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - course_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Course
+  CourseOffering:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: classroom_id
+      template: integer
+      type: INTEGER
+    - name: course_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: instructor_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: semester_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Represents specific offerings of a course for a semester
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents specific offerings of a course for a semester
+    label: CourseOffering
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - course_offering_id
+      name: AssignmentList
+      resource: Assignment
+    - direction: tomany
+      fks:
+      - course_offering_id
+      name: AttendanceList
+      resource: Attendance
+    - direction: tomany
+      fks:
+      - course_offering_id
+      name: GradeList
+      resource: Grade
+    - direction: toone
+      fks:
+      - classroom_id
+      name: classroom
+      resource: Classroom
+    - direction: toone
+      fks:
+      - course_id
+      name: course
+      resource: Course
+    - direction: toone
+      fks:
+      - instructor_id
+      name: instructor
+      resource: Instructor
+    - direction: toone
+      fks:
+      - semester_id
+      name: semester
+      resource: Semester
+    type: CourseOffering
+  Grade:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: course_offering_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: student_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: grade
+      required: true
+      template: text
+      type: VARCHAR
+    description: Represents the final grades for students in courses
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents the final grades for students in courses
+    label: Grade
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - course_offering_id
+      name: course_offering
+      resource: CourseOffering
+    - direction: toone
+      fks:
+      - student_id
+      name: student
+      resource: Student
+    type: Grade
+  Instructor:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents instructors who teach courses
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents instructors who teach courses
+    label: Instructor
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - instructor_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Instructor
+  Role:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Defines roles for users in the system, such as 'Student' or 'Admin'
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Defines roles for users in the system, such as 'Student' or 'Admin'
+    label: Role
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - role_id
+      name: UserRoleList
+      resource: UserRole
+    type: Role
+  Semester:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: start_date
+      required: true
+      type: DATETIME
+    - name: end_date
+      required: true
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents academic semesters
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents academic semesters
+    label: Semester
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - semester_id
+      name: CourseOfferingList
+      resource: CourseOffering
+    type: Semester
+  Student:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: enrollment_date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents students in the system
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents students in the system
+    label: Student
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - student_id
+      name: AttendanceList
+      resource: Attendance
+    - direction: tomany
+      fks:
+      - student_id
+      name: GradeList
+      resource: Grade
+    - direction: tomany
+      fks:
+      - student_id
+      name: SubmissionList
+      resource: Submission
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserRoleList
+      resource: UserRole
+    type: Student
+  Submission:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: assignment_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: student_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: submission_date
+      type: DATETIME
+    - name: grade
+      template: integer
+      type: INTEGER
+    description: Represents student submissions for assignments
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents student submissions for assignments
+    label: Submission
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - assignment_id
+      name: assignment
+      resource: Assignment
+    - direction: toone
+      fks:
+      - student_id
+      name: student
+      resource: Student
+    type: Submission
+  UserRole:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: role_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Junction table assigning roles to users
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Junction table assigning roles to users
+    label: UserRole
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - role_id
+      name: role
+      resource: Role
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: Student
+    type: UserRole
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false
